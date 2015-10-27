@@ -9,6 +9,7 @@
     <string name="start">Start</string>
     <string name="game">Game:</string>
     <string name="score">Score:</string>
+    <string name="set_score">set_score</string>
     <string name="level">Level:</string>
     <string name="set_game">Set Game</string>
     <string name="set_level">Set Level</string>

@@ -6,6 +6,7 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +84,7 @@ public final class Simon {
     private static final String KEY_PAUSE_DURATION = "pauseDuration";
     private static final String KEY_ACTIVE_COLORS = "activeColors";
     private static final String KEY_CURRENT_SEQUENCE = "currentSequence";
+    private static final String SCORE = "score";
 
     private boolean[] activeColors = new boolean [4];
     private int[] longestSequence = new int[32];
@@ -155,6 +157,7 @@ public final class Simon {
             map.putInt(KEY_SEQUENCE_INDEX, Integer.valueOf(sequenceIndex));
             map.putInt(KEY_TOTAL_LENGTH, Integer.valueOf(totalLength));
             map.putInt(KEY_PLAYER_POSITION, Integer.valueOf(playerPosition));
+            map.putInt(SCORE, Integer.valueOf(score));
 
             map.putInt(KEY_WIN_TONE_INDEX, Integer.valueOf(winToneIndex));
             map.putInt(KEY_RAZ_TONE_INDEX, Integer.valueOf(razToneIndex));
@@ -177,11 +180,14 @@ public final class Simon {
         setLevel(map.getInt(KEY_GAME_LEVEL));
         setLongest(map.getString(KEY_LONGEST_SEQUENCE));
 
+
+
 		/* Extract the rest. */
         setCurrent(map.getString(KEY_CURRENT_SEQUENCE));
         sequenceIndex = map.getInt(KEY_SEQUENCE_INDEX);
         totalLength = map.getInt(KEY_TOTAL_LENGTH);
         playerPosition = map.getInt(KEY_PLAYER_POSITION);
+        score = map.getInt(SCORE);
 
         winToneIndex = map.getInt(KEY_WIN_TONE_INDEX);
         razToneIndex = map.getInt(KEY_RAZ_TONE_INDEX);
@@ -238,6 +244,10 @@ public final class Simon {
             this.removeMessages(UI);
             sendMessageDelayed(obtainMessage(UI), delayMillis);
         }
+    }
+
+    public int getScore () {
+        return score;
     }
 
     public int getLevel () {
@@ -406,7 +416,12 @@ public final class Simon {
                 if (isLit) {
                     showButtonRelease(currentSequence[sequenceLength - 1]);
                     isLit = false;
-                    if (winToneIndex == 6) gameMode = WON;
+                    if (winToneIndex == 6)
+                    {
+                        gameMode = WON;
+                        score = score +1;
+                        Log.d("the score is:",Integer.toString(getScore()));
+                    }
                 } else {
                     showButtonPress(currentSequence[sequenceLength - 1]);
                     isLit = true;
@@ -503,6 +518,7 @@ public final class Simon {
         scaleBeepDuration (1);
         playerPosition = 1;
         currentSequence[0] = getRandomColor();
+        score = 0;
         playCurrent();
     }
 

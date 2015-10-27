@@ -24,6 +24,7 @@ public class SimonActivity extends Activity {
     private static final int ABOUT_DIALOG = 3;
     private static final int HELP_DIALOG = 4;
 
+
     private Simon model;
     private Menu mMenu;
     private AlertDialog levelDialog;
@@ -32,6 +33,7 @@ public class SimonActivity extends Activity {
     private AlertDialog helpDialog;
     private TextView levelDisplay;
     private TextView gameDisplay;
+    private TextView scoreDisplay;
 
     /** Called when the activity is first created. */
     @Override
@@ -47,6 +49,8 @@ public class SimonActivity extends Activity {
         gameDisplay = (TextView)findViewById(R.id.game);
 
         levelDisplay = (TextView)findViewById(R.id.level);
+
+        scoreDisplay = (TextView)findViewById(R.id.set_score);
 
         Button lastButton = (Button)findViewById(R.id.last);
         lastButton.setOnClickListener(new OnClickListener() {
@@ -80,6 +84,7 @@ public class SimonActivity extends Activity {
             model.setLongest(settings.getString(Simon.KEY_LONGEST_SEQUENCE, "")); 	// String Rep of Longest
             levelDisplay.setText(String.valueOf(model.getLevel()));
             gameDisplay.setText(String.valueOf(model.getGame()));
+            scoreDisplay.setText(String.valueOf(model.getScore()));
         } else {
         	/* If I understand the activity cycle, I can put this here and not override
         	 * onRestoreInstanceState */
